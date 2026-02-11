@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MycoReator</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="js/202602111405.js"></script>
+<script src="js/202602111407.js"></script>
+<script src="js/202602111408.js"></script>
+<script src="js/202602111411.js"></script>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+</style>
+</head>
+<body>
+<h1>MycoReator</h1>
+
+<h2>Objective</h2>
+<p>Control a heating pad using SHT30 temperature sensor and visualize the logged temperature and humidity data.</p>
+
+<h2>Major Tasks</h2>
+<ul>
+<li>Read CSV logs from Arduino heater system</li>
+<li>Convert CSV data to JSON for JavaScript</li>
+<li>Plot Time vs Temperature (left Y-axis) and Humidity (right Y-axis) using Plotly.js</li>
+<li>Ignore invalid or negative temperature readings</li>
+<li>Provide interactive visualizations of heater behavior</li>
+</ul>
+
+<h2>Tools Used</h2>
+<ul>
+<li>Python: CSV processing and JS generation</li>
+<li>HTML/CSS/JavaScript: website structure and styling</li>
+<li>Plotly.js: interactive plotting library</li>
+<li>Arduino with SHT30 sensor & MOSFET heater control</li>
+<li>CSV logs from Arduino</li>
+</ul>
+
+<h2>Hardware Setup</h2>
+<pre>
+SHT30 Sensor (I2C)
+- Red    -> 5V
+- Black  -> GND
+- Yellow -> SCL (Mega pin 21)
+- White  -> SDA (Mega pin 20)
+
+Heating Pad via MOSFET (IRL44N)
+- Gate   -> Arduino pin 9
+- Drain  -> Heating pad negative (-)
+- Source -> GND
+- Heating pad positive (+) -> 12V DC adapter positive
+- 1N4007 diode across heating pad (Cathode to +12V, Anode to Drain)
+
+Power Supply
+- Alito AC/DC Adapter ALT-1201: 12V DC, 1A for heating pad
+- Arduino powered via USB or separate 5V supply
+</pre>
+
+<h2>Plots</h2>
+<div id="plot_0" style="width:100%;height:400px;"></div>
+<div id="plot_1" style="width:100%;height:400px;"></div>
+<div id="plot_2" style="width:100%;height:400px;"></div>
+<div id="plot_3" style="width:100%;height:400px;"></div>
+
+<script>
+
+var trace_temp_0 = {
+  x: data_202602111405.map(d => d.TimeElapsed),
+  y: data_202602111405.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111405 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_0 = {
+  x: data_202602111405.map(d => d.TimeElapsed),
+  y: data_202602111405.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111405 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_0', [trace_temp_0, trace_hum_0], {
+  title: 'data_202602111405 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+var trace_temp_1 = {
+  x: data_202602111407.map(d => d.TimeElapsed),
+  y: data_202602111407.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111407 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_1 = {
+  x: data_202602111407.map(d => d.TimeElapsed),
+  y: data_202602111407.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111407 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_1', [trace_temp_1, trace_hum_1], {
+  title: 'data_202602111407 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+var trace_temp_2 = {
+  x: data_202602111408.map(d => d.TimeElapsed),
+  y: data_202602111408.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111408 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_2 = {
+  x: data_202602111408.map(d => d.TimeElapsed),
+  y: data_202602111408.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111408 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_2', [trace_temp_2, trace_hum_2], {
+  title: 'data_202602111408 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+var trace_temp_3 = {
+  x: data_202602111411.map(d => d.TimeElapsed),
+  y: data_202602111411.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111411 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_3 = {
+  x: data_202602111411.map(d => d.TimeElapsed),
+  y: data_202602111411.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111411 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_3', [trace_temp_3, trace_hum_3], {
+  title: 'data_202602111411 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+</script>
+
+</body>
+</html>
