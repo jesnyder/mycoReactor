@@ -1,181 +1,108 @@
-/***************************************************************
-  Project: Heater Control System with Optional SHT30 Sensor
-  Date: 2026-02-11
+/*
+Date: 2026-02-11
+Objective: Control a heating pad using SHT30 temperature sensor.
+The Arduino reads temperature and humidity, controls the heater via MOSFET, and prints system status.
+The target heater temperature is adjustable via Serial commands (e.g., "H 50" sets target to 50°C).
 
-  Objective:
-  Control a 12V heating pad using an Arduino MEGA 2560 and
-  IRLZ44N MOSFET. Monitor temperature and humidity using
-  an SHT30 sensor (optional). Maintain a target temperature
-  of 40°C (default), adjustable via Serial command:
-      Example:  H 50
-  Logs system status including:
-    - Elapsed Time (HH:MM:SS)
-    - Temperature (°C)
-    - Humidity (%)
-    - Target Temperature (°C)
-    - Heater ON/OFF state
+Hardware Setup:
 
-  If the SHT30 fails or is disconnected:
-    - Temperature and humidity are logged as NAN
-    - Heater control is disabled
+1. SHT30 Sensor (I2C)
+   - Red    -> 5V
+   - Black  -> GND
+   - Yellow -> SCL (Mega pin 21)
+   - White  -> SDA (Mega pin 20)
 
-  MOSFET + Diode Wiring Summary:
-  --------------------------------
-  The IRLZ44N MOSFET acts as a low-side switch:
-    Gate  -> Arduino digital pin (through 220Ω resistor recommended)
-    Drain -> Heating pad negative
-    Source -> Ground
+2. Heating Pad via MOSFET (IRL44N)
+   - Gate   -> Arduino pin 9
+   - Drain  -> Heating pad negative (-)
+   - Source -> GND
+   - Heating pad positive (+) -> 12V DC adapter positive
+   - 1N4007 diode across heating pad: Cathode (silver band) to +12V, Anode to - (drain side)
+     Purpose: protects MOSFET from back EMF.
 
-  Heating pad positive -> +12V power supply
+3. Power Supply
+   - Alito AC/DC Adapter ALT-1201: 12V DC, 1A for heating pad
+   - Arduino powered via USB or separate 5V supply
 
-  1N4007 Diode:
-    Cathode (silver band) -> +12V
-    Anode -> MOSFET Drain
-  This protects against voltage spikes.
+Libraries:
+   - Wire.h (I2C communication)
+   - Adafruit_SHT31.h (SHT30 sensor)
 
-***************************************************************/
+*/
 
 #include <Wire.h>
-#include <Adafruit_SHT31.h>
+#include "Adafruit_SHT31.h"
 
-// ---------------- PIN DEFINITIONS ----------------
-#define HEATER_PIN 8   // MOSFET Gate control pin
+Adafruit_SHT31 sht31 = Adafruit_SHT31();
 
-// ---------------- GLOBAL VARIABLES ----------------
-Adafruit_SHT31 sht30 = Adafruit_SHT31();
+const int heaterPin = 9;        // Arduino pin connected to MOSFET gate
+float targetTemp = 50.0;        // Default target temperature (°C)
 
-float targetTemperature = 40.0;  // Default target temp (°C)
-float currentTemperature = NAN;
-float currentHumidity = NAN;
-
-bool heaterState = false;
-bool sensorAvailable = false;
-
-unsigned long startTime;
-
-// --------------------------------------------------
+unsigned long startMillis;       // Track elapsed time
 
 void setup() {
   Serial.begin(9600);
-  pinMode(HEATER_PIN, OUTPUT);
-  digitalWrite(HEATER_PIN, LOW);
+  pinMode(heaterPin, OUTPUT);
+  digitalWrite(heaterPin, LOW); // Heater off initially
 
-  startTime = millis();
-
-  Serial.println("Heater Control System Initializing...");
-
-  if (sht30.begin(0x44)) {   // Default I2C address
-    sensorAvailable = true;
-    Serial.println("SHT30 sensor detected.");
-  } else {
-    sensorAvailable = false;
-    Serial.println("SHT30 sensor NOT detected. Running without temperature control.");
+  if (!sht31.begin(0x44)) {
+    Serial.println("SHT30 sensor not found!");
   }
-}
 
-// --------------------------------------------------
+  startMillis = millis(); // Start time counter
+}
 
 void loop() {
-
-  readSensor();
-  controlHeater();
-  readSerialCommands();
-  printStatus();
-
-  delay(2000);  // Update every 2 seconds
-}
-
-// --------------------------------------------------
-
-void readSensor() {
-  if (sensorAvailable) {
-    currentTemperature = sht30.readTemperature();
-    currentHumidity = sht30.readHumidity();
-
-    if (isnan(currentTemperature) || isnan(currentHumidity)) {
-      currentTemperature = NAN;
-      currentHumidity = NAN;
-    }
-  } else {
-    currentTemperature = NAN;
-    currentHumidity = NAN;
-  }
-}
-
-// --------------------------------------------------
-
-void controlHeater() {
-
-  if (!isnan(currentTemperature)) {
-    if (currentTemperature < targetTemperature) {
-      digitalWrite(HEATER_PIN, HIGH);
-      heaterState = true;
-    } else {
-      digitalWrite(HEATER_PIN, LOW);
-      heaterState = false;
-    }
-  } else {
-    // Disable heater if no valid temperature
-    digitalWrite(HEATER_PIN, LOW);
-    heaterState = false;
-  }
-}
-
-// --------------------------------------------------
-
-void readSerialCommands() {
+  // --- Handle Serial input for adjusting target temperature ---
   if (Serial.available()) {
-    String input = Serial.readStringUntil('\n');
-    input.trim();
-
-    if (input.startsWith("H")) {
-      float newTemp = input.substring(1).toFloat();
-      if (newTemp > 0 && newTemp < 100) {
-        targetTemperature = newTemp;
-        Serial.print("New target temperature set to: ");
-        Serial.println(targetTemperature);
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim(); // Remove whitespace
+    if (cmd.startsWith("H")) {
+      float val = cmd.substring(1).toFloat();
+      if (val > 0 && val < 100) {
+        targetTemp = val;
       }
     }
   }
-}
 
-// --------------------------------------------------
+  // --- Read SHT30 sensor ---
+  float temperature = sht31.readTemperature(); // °C
+  float humidity = sht31.readHumidity();       // %
 
-void printStatus() {
+  bool heaterOn = false;
 
-  unsigned long elapsedMillis = millis() - startTime;
-  unsigned long seconds = elapsedMillis / 1000;
-  unsigned int hours = seconds / 3600;
-  unsigned int minutes = (seconds % 3600) / 60;
-  unsigned int secs = seconds % 60;
+  if (!isnan(temperature)) {
+    // --- Heater control logic ---
+    if (temperature < targetTemp) {
+      digitalWrite(heaterPin, HIGH);
+      heaterOn = true;
+    } else {
+      digitalWrite(heaterPin, LOW);
+      heaterOn = false;
+    }
+  }
 
-  Serial.println("--------------------------------------------------");
+  // --- Compute elapsed time ---
+  unsigned long elapsed = (millis() - startMillis) / 1000;
+  unsigned int hours = elapsed / 3600;
+  unsigned int minutes = (elapsed % 3600) / 60;
+  unsigned int seconds = elapsed % 60;
 
-  Serial.print("Time Elapsed: ");
-  Serial.print(hours);
-  Serial.print("h : ");
-  Serial.print(minutes);
-  Serial.print("m : ");
-  Serial.print(secs);
-  Serial.println("s");
-
-  Serial.print("Temperature: ");
-  Serial.print(currentTemperature);
-  Serial.println(" °C");
+  // --- Print system status on one line ---
+  Serial.print(hours); Serial.print(":");
+  if (minutes < 10) Serial.print("0");
+  Serial.print(minutes); Serial.print(":");
+  if (seconds < 10) Serial.print("0");
+  Serial.print(seconds); Serial.print(" | ");
 
   Serial.print("Humidity: ");
-  Serial.print(currentHumidity);
-  Serial.println(" %");
+  Serial.print(isnan(humidity) ? -1 : humidity, 1);
+  Serial.print("% | Temp: ");
+  Serial.print(isnan(temperature) ? -1 : temperature, 1);
+  Serial.print("°C | Target: ");
+  Serial.print(targetTemp, 1);
+  Serial.print("°C | Heater: ");
+  Serial.println(heaterOn ? "ON" : "OFF");
 
-  Serial.print("Target Temperature: ");
-  Serial.print(targetTemperature);
-  Serial.println(" °C");
-
-  Serial.print("Heater State: ");
-  if (heaterState)
-    Serial.println("ON");
-  else
-    Serial.println("OFF");
-
-  Serial.println("--------------------------------------------------");
+  delay(1000); // 1-second loop for readability
 }

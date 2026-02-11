@@ -1,0 +1,12 @@
+Write python code to build me a website.
+
+An index.html with the title "MycoReactor"
+
+Use Javascript Plotly
+https://plotly.com/javascript/
+
+to create plots of the time vs temperature
+
+Create a unique plot for each of the data saved in the folder "data"
+
+An example of the file contents are:

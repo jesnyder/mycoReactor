@@ -1,0 +1,102 @@
+Write python code to record arduino output to serial monitor and save
+
+In the header of the code as a comment write the date the code was made
+
+the objective of the code
+and major tasks to acheive
+
+create the log file using timestamp
+for example if the date is February 11, 2026 2:01 pm
+use
+202602111401.csv as the filename
+save in this directory
+"../../results/heater"
+you may have to create the directory
+
+create the file at the beginning of logging and then append every 10 seconds
+
+
+Here is the structure of the data in the terminal:
+
+please print system status on one line to the console with values and units,
+time lapsed - hours : minutes : seconds
+humidity (as percentage humidity),
+temperature (deg C),
+target heater temperature ( deg C target)
+Heater On or Off,
+
+
+Here is an example code.
+
+"""
+Date: 2026-02-11
+Objective: Log Arduino heater system status to a file every 10 seconds.
+Logs: time elapsed, humidity, temperature, target heater temperature, heater on/off
+The script appends to a timestamped log file in 'logs' folder.
+"""
+
+import serial
+import time
+import os
+from datetime import datetime
+
+# ==== CONFIG ====
+COM_PORT = 'COM5'        # Change to your Arduino COM port
+BAUD_RATE = 9600
+LOG_INTERVAL = 10        # seconds between log entries
+LOG_FOLDER = "logs"
+
+# ==== SETUP LOG FOLDER ====
+if not os.path.exists(LOG_FOLDER):
+    os.makedirs(LOG_FOLDER)
+
+# Timestamped log filename
+log_filename = os.path.join(LOG_FOLDER, f"heater_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt")
+
+# ==== OPEN SERIAL PORT ====
+try:
+    ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=2)
+    time.sleep(2)  # give Arduino time to reset
+except serial.SerialException as e:
+    print(f"Error opening serial port {COM_PORT}: {e}")
+    exit()
+
+print(f"Logging started. Data will append to {log_filename}")
+
+start_time = time.time()
+
+try:
+    while True:
+        # Time elapsed
+        elapsed = int(time.time() - start_time)
+        hours = elapsed // 3600
+        minutes = (elapsed % 3600) // 60
+        seconds = elapsed % 60
+        time_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+        # Request data from Arduino
+        ser.write(b"STATUS\n")
+        line = ser.readline().decode('utf-8', errors='ignore').strip()
+
+        if line and line.count(',') == 3:
+            humidity, temp, target, heater = line.split(',')
+        else:
+            humidity, temp, target, heater = 'NAN', 'NAN', 'NAN', 'NAN'
+
+        # Build log line
+        log_line = f"{time_str},{humidity},{temp},{target},{heater}\n"
+
+        # Append to file
+        with open(log_filename, 'a') as f:
+            f.write(log_line)
+
+        # Print to console on one line
+        print(f"{time_str} | Humidity: {humidity}% | Temp: {temp}°C | Target: {target}°C | Heater: {heater}")
+
+        # Wait before next log
+        time.sleep(LOG_INTERVAL)
+
+except KeyboardInterrupt:
+    print("\nLogging stopped by user.")
+finally:
+    ser.close()
