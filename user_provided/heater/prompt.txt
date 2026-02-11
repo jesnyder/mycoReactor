@@ -1,0 +1,39 @@
+Write Arduino code to control a heater using a temperature sensor.
+With comments in the code. Explain how and why.
+list arduino libraries to add in the header
+as code in header of the code place date and summary of the objective of the code,
+Explain the hardware setup in clear, structured language, what plugs into what.
+
+
+please print system status on one line to the console with values and units,
+time lapsed - hours : minutes : seconds
+humidity (as percentage humidity),
+temperature (deg C),
+target heater temperature ( deg C target)
+Heater On or Off,
+
+
+if the temperature sensor works, use it to control the heater. set the temperature to 40 deg C. display the target heater temperature on the line. allow the user to adjust through the serial monitor - i.e. "H 50" makes the target temperature 50. explain the wiring with a mofset and diode in the header, similar to the pumps
+
+
+Parts:
+
+Alito AC/DC Adapter, Model ALT-1201, Input 100-240 VAC, Output 12VDC 1A
+
+Arduino MEGA 2560 R3 (microcontroller)
+
+1N4007 - Rectifier Diode, 1A, 1000 V
+
+IRL44N
+
+Diode (black with silver band on one side)
+
+SHT30 Temperature And Humidity Sensor (https://www.adafruit.com/product/5064)
+The cable has four wires:
+Red = VCC (2.15-5VDC),
+Black = Ground,
+Yellow = I2C Clock / SCL,
+White = I2C Data / SDA.
+
+
+Heating Pad - Electric Heating Pad - 10cm x 5cm, https://www.adafruit.com/product/1481
