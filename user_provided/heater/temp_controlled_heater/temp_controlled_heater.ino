@@ -43,7 +43,7 @@ Adafruit_SHT31 sht31 = Adafruit_SHT31();
 const int heaterPin = 9;
 
 // Default target temperature in Celsius
-float targetTemp = 40.0;
+float targetTemp = 60.0;
 
 // Time tracking
 unsigned long startMillis;

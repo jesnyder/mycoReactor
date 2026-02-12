@@ -11,6 +11,8 @@
 <script src="js/202602111532.js"></script>
 <script src="js/202602111606.js"></script>
 <script src="js/202602111633.js"></script>
+<script src="js/202602111635.js"></script>
+<script src="js/202602111639.js"></script>
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
 </style>
@@ -67,6 +69,8 @@ Power Supply
 <div id="plot_4" style="width:100%;height:400px;"></div>
 <div id="plot_5" style="width:100%;height:400px;"></div>
 <div id="plot_6" style="width:100%;height:400px;"></div>
+<div id="plot_7" style="width:100%;height:400px;"></div>
+<div id="plot_8" style="width:100%;height:400px;"></div>
 
 <script>
 
@@ -256,6 +260,62 @@ var trace_hum_6 = {
 };
 Plotly.newPlot('plot_6', [trace_temp_6, trace_hum_6], {
   title: 'data_202602111633 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+var trace_temp_7 = {
+  x: data_202602111635.map(d => d.TimeElapsed),
+  y: data_202602111635.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111635 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_7 = {
+  x: data_202602111635.map(d => d.TimeElapsed),
+  y: data_202602111635.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111635 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_7', [trace_temp_7, trace_hum_7], {
+  title: 'data_202602111635 - Temperature & Humidity vs Time',
+  xaxis: {title: 'Time (minutes)'},
+  yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
+  yaxis2: {
+      title: 'Humidity (%)',
+      overlaying: 'y',
+      side: 'right',
+      color: 'blue'
+  }
+});
+
+var trace_temp_8 = {
+  x: data_202602111639.map(d => d.TimeElapsed),
+  y: data_202602111639.map(d => d.Temperature),
+  mode: 'lines+markers',
+  name: 'data_202602111639 Temperature',
+  yaxis: 'y1',
+  marker: {color: 'red'}
+};
+var trace_hum_8 = {
+  x: data_202602111639.map(d => d.TimeElapsed),
+  y: data_202602111639.map(d => d.Humidity),
+  mode: 'lines+markers',
+  name: 'data_202602111639 Humidity',
+  yaxis: 'y2',
+  marker: {color: 'blue'}
+};
+Plotly.newPlot('plot_8', [trace_temp_8, trace_hum_8], {
+  title: 'data_202602111639 - Temperature & Humidity vs Time',
   xaxis: {title: 'Time (minutes)'},
   yaxis: {title: 'Temperature (°C)', side: 'left', color: 'red'},
   yaxis2: {
