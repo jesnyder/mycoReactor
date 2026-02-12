@@ -388,14 +388,6 @@ def generate_html(html_path, datasets):
     <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
 
-"""
-
-    # Add JavaScript data files
-    for dataset in datasets:
-        html += f'    <script src="js/{dataset["js_filename"]}"></script>\n'
-
-    # Add styles with a clean, scientific aesthetic
-    html += """
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -784,12 +776,17 @@ Pin Layout (left to right): Gate - Drain - Source
         </div>
 """
 
+    # Add JavaScript data files here (just before the main script)
+    html += "\n    <!-- Data Files -->\n"
+    for dataset in datasets:
+        html += f'    <script src="js/{dataset["js_filename"]}"></script>\n'
+
     # Add JavaScript for plots and tables
     html += """
+    <!-- Main Visualization Script -->
     <script>
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing MycoReactor visualizations...');
+    (function() {
+        'use strict';
 """
 
     for dataset in datasets:
@@ -969,8 +966,7 @@ Pin Layout (left to right): Gate - Drain - Source
 """
 
     html += """
-            console.log('All visualizations loaded successfully!');
-        });
+    })(); // End IIFE
 
 """
 
