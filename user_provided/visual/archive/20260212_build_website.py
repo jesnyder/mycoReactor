@@ -1,0 +1,260 @@
+Read the whole file. thnk hard. accuracy is more important than speed.
+Use comments to explain the code.
+
+Write python code to build a website.
+put all the code in a function called "build_website"
+in the header of the python file, put the date the file was created as a comment
+
+Look in this directory. "../../results/heater"
+each filename is saved with a timestamp - year month day hour minute
+For each file found, create a .js file in "../../docs/js" with the same filename
+
+in each folder create a const variable with a unique name
+set that variable equal to json that contains the contents of the file of the same name
+
+this is the strcuture of the data inside the .csv in the "../../results/heater" folder
+
+An example of the file contents are:
+
+TimeElapsed,Humidity,Temperature,Target,Heater
+00:00:00,NAN,NAN,NAN,NAN
+00:00:10,5.0,47.2,50.0,ON
+00:00:20,NAN,NAN,NAN,NAN
+00:00:30,5.0,47.2,50.0,ON
+00:00:40,4.9,-45.0,50.0,ON
+00:00:50,5.0,47.2,50.0,ON
+00:01:00,5.1,47.2,50.0,ON
+00:01:10,5.1,47.2,50.0,ON
+00:01:20,4.8,47.2,50.0,ON
+00:01:30,4.6,47.2,50.0,ON
+
+Ignore the NAN. disreguard negative numbers. just do not include.
+
+TimeElapsed is the timestamp. hours : minutes : seconds
+convert to minutes and use as a number to create a scatter plot with the temperature and humidity.
+plot temperature against the left y axis and humidity against the right y axis.
+label the axes with units, for example x-axis "Time lapsed (minutes)", y-axis left "Temperature (degC)", y-axis right "Humidity (%)"
+when labeling the data sets, drop the filename specifics and just include "Temperature" or "Humditiy" as label name
+
+Add a button to "download csv" to download the data in the plot as a csv.
+Place the button just above the plot. Give each dataset a unique name so all buttons can displayed with their plots on the webpage.
+Put the timestamp in the filename.
+
+Add a background shade for when the heater is on or off.
+Add a horizontal line to show the taerget temperature
+
+Use Javascript Plotly
+https://plotly.com/javascript/
+to create plots of the time vs temperature for each .csv saved in
+
+Refer to the variable for the data
+
+In the header of the .js file, include the date and clear direction of what to copy paste where in the index file, located in the "docs" direction, the folder above the one containing the js for the code to run properly
+
+
+also create an index.html with the title "MycoReator" in "../../docs"
+
+Write an objective, tasks, and list tool by reviewing the code and comments pasted below.
+
+This is the background for the index file text. Include specifics, including wiring and how to identify the pins on the IRL44N
+
+/*
+Date: 2026-02-11
+Objective: Control a heating pad using SHT30 temperature sensor.
+The Arduino reads temperature and humidity, controls the heater via MOSFET, and prints system status.
+The target heater temperature is adjustable via Serial commands (e.g., "H 50" sets target to 50°C).
+
+Hardware Setup:
+
+1. SHT30 Sensor (I2C)
+   - Red    -> 5V
+   - Black  -> GND
+   - Yellow -> SCL (Mega pin 21)
+   - White  -> SDA (Mega pin 20)
+
+2. Heating Pad via MOSFET (IRL44N)
+   - Gate   -> Arduino pin 9
+   - Drain  -> Heating pad negative (-)
+   - Source -> GND
+   - Heating pad positive (+) -> 12V DC adapter positive
+   - 1N4007 diode across heating pad: Cathode (silver band) to +12V, Anode to - (drain side)
+     Purpose: protects MOSFET from back EMF.
+
+3. Power Supply
+   - Alito AC/DC Adapter ALT-1201: 12V DC, 1A for heating pad
+   - Arduino powered via USB or separate 5V supply
+
+Libraries:
+   - Wire.h (I2C communication)
+   - Adafruit_SHT31.h (SHT30 sensor)
+
+*/
+
+#include <Wire.h>
+#include "Adafruit_SHT31.h"
+
+Adafruit_SHT31 sht31 = Adafruit_SHT31();
+
+const int heaterPin = 9;        // Arduino pin connected to MOSFET gate
+float targetTemp = 50.0;        // Default target temperature (°C)
+
+unsigned long startMillis;       // Track elapsed time
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(heaterPin, OUTPUT);
+  digitalWrite(heaterPin, LOW); // Heater off initially
+
+  if (!sht31.begin(0x44)) {
+    Serial.println("SHT30 sensor not found!");
+  }
+
+  startMillis = millis(); // Start time counter
+}
+
+void loop() {
+  // --- Handle Serial input for adjusting target temperature ---
+  if (Serial.available()) {
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim(); // Remove whitespace
+    if (cmd.startsWith("H")) {
+      float val = cmd.substring(1).toFloat();
+      if (val > 0 && val < 100) {
+        targetTemp = val;
+      }
+    }
+  }
+
+  // --- Read SHT30 sensor ---
+  float temperature = sht31.readTemperature(); // °C
+  float humidity = sht31.readHumidity();       // %
+
+  bool heaterOn = false;
+
+  if (!isnan(temperature)) {
+    // --- Heater control logic ---
+    if (temperature < targetTemp) {
+      digitalWrite(heaterPin, HIGH);
+      heaterOn = true;
+    } else {
+      digitalWrite(heaterPin, LOW);
+      heaterOn = false;
+    }
+  }
+
+  // --- Compute elapsed time ---
+  unsigned long elapsed = (millis() - startMillis) / 1000;
+  unsigned int hours = elapsed / 3600;
+  unsigned int minutes = (elapsed % 3600) / 60;
+  unsigned int seconds = elapsed % 60;
+
+  // --- Print system status on one line ---
+  Serial.print(hours); Serial.print(":");
+  if (minutes < 10) Serial.print("0");
+  Serial.print(minutes); Serial.print(":");
+  if (seconds < 10) Serial.print("0");
+  Serial.print(seconds); Serial.print(" | ");
+
+  Serial.print("Humidity: ");
+  Serial.print(isnan(humidity) ? -1 : humidity, 1);
+  Serial.print("% | Temp: ");
+  Serial.print(isnan(temperature) ? -1 : temperature, 1);
+  Serial.print("°C | Target: ");
+  Serial.print(targetTemp, 1);
+  Serial.print("°C | Heater: ");
+  Serial.println(heaterOn ? "ON" : "OFF");
+
+  delay(1000); // 1-second loop for readability
+}
+
+
+"""
+Date: 2026-02-11
+Objective: Log Arduino heater system status to a file every 10 seconds.
+Major Tasks:
+1. Open serial connection to Arduino
+2. Create a timestamped CSV log file in '../../results/heater'
+3. Read system status line from Arduino
+4. Parse time elapsed, humidity, temperature, target heater temperature, heater on/off
+5. Append parsed data to log file every 10 seconds
+6. Print same information to console on one line
+"""
+
+import serial
+import time
+import os
+from datetime import datetime
+
+# ==== CONFIG ====
+COM_PORT = 'COM5'        # Set your Arduino COM port
+BAUD_RATE = 9600
+LOG_INTERVAL = 10        # seconds between log entries
+LOG_FOLDER = "../../results/heater"
+
+# ==== CREATE LOG FOLDER ====
+if not os.path.exists(LOG_FOLDER):
+    os.makedirs(LOG_FOLDER)
+
+# Timestamped CSV filename: YYYYMMDDHHMM.csv
+log_filename = os.path.join(LOG_FOLDER, f"{datetime.now().strftime('%Y%m%d%H%M')}.csv")
+
+# ==== OPEN SERIAL PORT ====
+try:
+    ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=2)
+    time.sleep(2)  # allow Arduino to reset
+except serial.SerialException as e:
+    print(f"Error opening serial port {COM_PORT}: {e}")
+    exit()
+
+print(f"Logging started. Data will append to {log_filename}")
+
+# Write CSV header
+with open(log_filename, 'a') as f:
+    f.write("TimeElapsed,Humidity,Temperature,Target,Heater\n")
+
+start_time = time.time()
+
+try:
+    while True:
+        # --- Time elapsed ---
+        elapsed = int(time.time() - start_time)
+        hours = elapsed // 3600
+        minutes = (elapsed % 3600) // 60
+        seconds = elapsed % 60
+        time_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+        # --- Read line from Arduino ---
+        line = ser.readline().decode('utf-8', errors='ignore').strip()
+
+        # Expected Arduino output format:
+        # 00:00:05 | Humidity: 45.2% | Temp: 38.6°C | Target: 40.0°C | Heater: ON
+        if line:
+            try:
+                parts = [p.strip() for p in line.split('|')]
+                humidity = parts[1].split()[1].replace('%','')
+                temp = parts[2].split()[1].replace('°C','')
+                target = parts[3].split()[1].replace('°C','')
+                heater = parts[4].split()[1]
+            except (IndexError, ValueError):
+                humidity = temp = target = heater = 'NAN'
+        else:
+            humidity = temp = target = heater = 'NAN'
+
+        # --- Build CSV line ---
+        log_line = f"{time_str},{humidity},{temp},{target},{heater}\n"
+
+        # --- Append to file ---
+        with open(log_filename, 'a') as f:
+            f.write(log_line)
+
+        # --- Print to console ---
+        print(f"{time_str} | Humidity: {humidity}% | Temp: {temp}°C | Target: {target}°C | Heater: {heater}")
+
+        # --- Wait before next log ---
+        time.sleep(LOG_INTERVAL)
+
+except KeyboardInterrupt:
+    print("\nLogging stopped by user.")
+
+finally:
+    ser.close()

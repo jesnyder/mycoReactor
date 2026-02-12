@@ -1,375 +1,359 @@
-// Date: 2026-02-12
-// Copy this variable into index.html to generate plot
-const data_202602111411 = [
-    {
-        "Time": 0.0,
-        "Temperature": NaN,
-        "Humidity": NaN,
-        "Target": NaN,
-        "Heater": "NAN"
-    },
-    {
-        "Time": 0.17,
-        "Temperature": 47.2,
-        "Humidity": 5.0,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 0.33,
-        "Temperature": NaN,
-        "Humidity": NaN,
-        "Target": NaN,
-        "Heater": "NAN"
-    },
-    {
-        "Time": 0.5,
-        "Temperature": 47.2,
-        "Humidity": 5.0,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 0.83,
-        "Temperature": 47.2,
-        "Humidity": 5.0,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.0,
-        "Temperature": 47.2,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.17,
-        "Temperature": 47.2,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.33,
-        "Temperature": 47.2,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.5,
-        "Temperature": 47.2,
-        "Humidity": 4.6,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.67,
-        "Temperature": 47.2,
-        "Humidity": 4.7,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 1.83,
-        "Temperature": 47.2,
-        "Humidity": 4.6,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.0,
-        "Temperature": 47.3,
-        "Humidity": 4.5,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.17,
-        "Temperature": 47.3,
-        "Humidity": 4.7,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.33,
-        "Temperature": 47.3,
-        "Humidity": 4.6,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.5,
-        "Temperature": 47.3,
-        "Humidity": 4.5,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.67,
-        "Temperature": 47.3,
-        "Humidity": 4.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 2.83,
-        "Temperature": 47.3,
-        "Humidity": 4.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.0,
-        "Temperature": 47.3,
-        "Humidity": 4.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.17,
-        "Temperature": 47.3,
-        "Humidity": 4.5,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.33,
-        "Temperature": 47.3,
-        "Humidity": 4.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.5,
-        "Temperature": 47.3,
-        "Humidity": 4.5,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.67,
-        "Temperature": 47.4,
-        "Humidity": 4.6,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 3.83,
-        "Temperature": 47.4,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.0,
-        "Temperature": 47.4,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.17,
-        "Temperature": 47.4,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.33,
-        "Temperature": 47.4,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.5,
-        "Temperature": 47.4,
-        "Humidity": 5.0,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.67,
-        "Temperature": 47.5,
-        "Humidity": 4.8,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 4.83,
-        "Temperature": 47.5,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.0,
-        "Temperature": 47.5,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.17,
-        "Temperature": 47.5,
-        "Humidity": 5.0,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.33,
-        "Temperature": 47.5,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.5,
-        "Temperature": 47.5,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.67,
-        "Temperature": 47.5,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 5.83,
-        "Temperature": 47.5,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 6.0,
-        "Temperature": 47.5,
-        "Humidity": 5.2,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 6.17,
-        "Temperature": 47.5,
-        "Humidity": 5.2,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 6.33,
-        "Temperature": 47.6,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 6.5,
-        "Temperature": 47.6,
-        "Humidity": 5.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 42.63,
-        "Temperature": 47.6,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 42.8,
-        "Temperature": 47.6,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 42.97,
-        "Temperature": 47.6,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.13,
-        "Temperature": 47.6,
-        "Humidity": 5.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.3,
-        "Temperature": 47.6,
-        "Humidity": 5.2,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.47,
-        "Temperature": 47.7,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.63,
-        "Temperature": 47.7,
-        "Humidity": 5.1,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.8,
-        "Temperature": 47.7,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 43.97,
-        "Temperature": 47.7,
-        "Humidity": 5.5,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 44.13,
-        "Temperature": 47.7,
-        "Humidity": 5.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 44.3,
-        "Temperature": 47.7,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 44.47,
-        "Temperature": 47.7,
-        "Humidity": 5.3,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 44.63,
-        "Temperature": 47.7,
-        "Humidity": 5.7,
-        "Target": 50.0,
-        "Heater": "ON"
-    },
-    {
-        "Time": 44.8,
-        "Temperature": 47.7,
-        "Humidity": 5.4,
-        "Target": 50.0,
-        "Heater": "ON"
-    }
-];
+/*
+ * MycoReactor Data File
+ * Generated: 2026-02-12 13:35:54
+ * Source: 202602111411.csv
+ *
+ * TO USE THIS FILE IN index.html:
+ * 1. Add this line in the <head> section or before the closing </body> tag:
+ *    <script src="js/202602111411.js"></script>
+ *
+ * 2. Access the data in your JavaScript code using:
+ *    data_202602111411
+ *
+ * Data structure:
+ *   - time_minutes: Array of time points in minutes
+ *   - humidity: Array of humidity values (%)
+ *   - temperature: Array of temperature values (°C)
+ *   - target: Array of target temperature values (°C)
+ *   - heater: Array of heater status ('ON' or 'OFF')
+ *   - time_elapsed: Array of formatted time strings (HH:MM:SS)
+ */
+
+const data_202602111411 = {
+  "time_minutes": [
+    0.0,
+    0.16666666666666666,
+    0.3333333333333333,
+    0.5,
+    0.6666666666666666,
+    0.8333333333333334,
+    1.0,
+    1.1666666666666667,
+    1.3333333333333333,
+    1.5,
+    1.6666666666666665,
+    1.8333333333333335,
+    2.0,
+    2.1666666666666665,
+    2.3333333333333335,
+    2.5,
+    2.6666666666666665,
+    2.8333333333333335,
+    3.0,
+    3.1666666666666665,
+    3.3333333333333335,
+    3.5,
+    3.6666666666666665,
+    3.8333333333333335,
+    4.0,
+    4.166666666666667,
+    4.333333333333333,
+    4.5,
+    4.666666666666667,
+    4.833333333333333,
+    5.0,
+    5.166666666666667,
+    5.333333333333333,
+    5.5,
+    5.666666666666667,
+    5.833333333333333,
+    6.0,
+    6.166666666666667,
+    6.333333333333333,
+    6.5,
+    42.63333333333333,
+    42.8,
+    42.96666666666667,
+    43.13333333333333,
+    43.3,
+    43.46666666666667,
+    43.63333333333333,
+    43.8,
+    43.96666666666667,
+    44.13333333333333,
+    44.3,
+    44.46666666666667,
+    44.63333333333333,
+    44.8
+  ],
+  "humidity": [
+    null,
+    5.0,
+    null,
+    5.0,
+    4.9,
+    5.0,
+    5.1,
+    5.1,
+    4.8,
+    4.6,
+    4.7,
+    4.6,
+    4.5,
+    4.7,
+    4.6,
+    4.5,
+    4.3,
+    4.3,
+    4.4,
+    4.5,
+    4.4,
+    4.5,
+    4.6,
+    4.8,
+    4.8,
+    4.8,
+    4.8,
+    5.0,
+    4.8,
+    5.1,
+    5.1,
+    5.0,
+    5.1,
+    5.1,
+    5.3,
+    5.3,
+    5.2,
+    5.2,
+    5.3,
+    5.4,
+    5.3,
+    5.1,
+    5.3,
+    5.4,
+    5.2,
+    5.1,
+    5.1,
+    5.3,
+    5.5,
+    5.4,
+    5.3,
+    5.3,
+    5.7,
+    5.4
+  ],
+  "temperature": [
+    null,
+    47.2,
+    null,
+    47.2,
+    null,
+    47.2,
+    47.2,
+    47.2,
+    47.2,
+    47.2,
+    47.2,
+    47.2,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.3,
+    47.4,
+    47.4,
+    47.4,
+    47.4,
+    47.4,
+    47.4,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.5,
+    47.6,
+    47.6,
+    47.6,
+    47.6,
+    47.6,
+    47.6,
+    47.6,
+    47.7,
+    47.7,
+    47.7,
+    47.7,
+    47.7,
+    47.7,
+    47.7,
+    47.7,
+    47.7
+  ],
+  "target": [
+    null,
+    50.0,
+    null,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0,
+    50.0
+  ],
+  "heater": [
+    null,
+    "ON",
+    null,
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON",
+    "ON"
+  ],
+  "time_elapsed": [
+    "00:00:00",
+    "00:00:10",
+    "00:00:20",
+    "00:00:30",
+    "00:00:40",
+    "00:00:50",
+    "00:01:00",
+    "00:01:10",
+    "00:01:20",
+    "00:01:30",
+    "00:01:40",
+    "00:01:50",
+    "00:02:00",
+    "00:02:10",
+    "00:02:20",
+    "00:02:30",
+    "00:02:40",
+    "00:02:50",
+    "00:03:00",
+    "00:03:10",
+    "00:03:20",
+    "00:03:30",
+    "00:03:40",
+    "00:03:50",
+    "00:04:00",
+    "00:04:10",
+    "00:04:20",
+    "00:04:30",
+    "00:04:40",
+    "00:04:50",
+    "00:05:00",
+    "00:05:10",
+    "00:05:20",
+    "00:05:30",
+    "00:05:40",
+    "00:05:50",
+    "00:06:00",
+    "00:06:10",
+    "00:06:20",
+    "00:06:30",
+    "00:42:38",
+    "00:42:48",
+    "00:42:58",
+    "00:43:08",
+    "00:43:18",
+    "00:43:28",
+    "00:43:38",
+    "00:43:48",
+    "00:43:58",
+    "00:44:08",
+    "00:44:18",
+    "00:44:28",
+    "00:44:38",
+    "00:44:48"
+  ]
+};
