@@ -540,5 +540,572 @@ const data_202602111606 = [
     "Temperature": 41.9,
     "Target": 40.0,
     "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.0,
+    "Humidity": 10.5,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.166666666666666,
+    "Humidity": 10.3,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.333333333333334,
+    "Humidity": 10.3,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.5,
+    "Humidity": 10.4,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.666666666666666,
+    "Humidity": 10.2,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 13.833333333333334,
+    "Humidity": 10.3,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.0,
+    "Humidity": 10.1,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.166666666666666,
+    "Humidity": 10.0,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.333333333333334,
+    "Humidity": 10.0,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.5,
+    "Humidity": 10.1,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.666666666666666,
+    "Humidity": 9.8,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 14.833333333333334,
+    "Humidity": 9.7,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.0,
+    "Humidity": 9.6,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.166666666666666,
+    "Humidity": 9.4,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.333333333333334,
+    "Humidity": 9.6,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.5,
+    "Humidity": 9.3,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.666666666666666,
+    "Humidity": 9.2,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 15.833333333333334,
+    "Humidity": 9.2,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.0,
+    "Humidity": 9.2,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.166666666666668,
+    "Humidity": 8.8,
+    "Temperature": 42.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.333333333333332,
+    "Humidity": 9.0,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.5,
+    "Humidity": 9.0,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.666666666666668,
+    "Humidity": 9.0,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 16.833333333333332,
+    "Humidity": 8.8,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.0,
+    "Humidity": 8.9,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.166666666666668,
+    "Humidity": 8.8,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.333333333333332,
+    "Humidity": 8.7,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.5,
+    "Humidity": 8.6,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.666666666666668,
+    "Humidity": 8.5,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 17.833333333333332,
+    "Humidity": 8.5,
+    "Temperature": 41.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.0,
+    "Humidity": 8.4,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.166666666666668,
+    "Humidity": 8.3,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.333333333333332,
+    "Humidity": 8.3,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.5,
+    "Humidity": 8.5,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.666666666666668,
+    "Humidity": 8.2,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 18.833333333333332,
+    "Humidity": 8.3,
+    "Temperature": 41.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.0,
+    "Humidity": 8.1,
+    "Temperature": 41.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.166666666666668,
+    "Humidity": 8.1,
+    "Temperature": 41.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.333333333333332,
+    "Humidity": 8.0,
+    "Temperature": 41.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.5,
+    "Humidity": 7.7,
+    "Temperature": 41.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.666666666666668,
+    "Humidity": 7.9,
+    "Temperature": 41.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 19.833333333333332,
+    "Humidity": 7.9,
+    "Temperature": 41.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.0,
+    "Humidity": 7.8,
+    "Temperature": 41.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.166666666666668,
+    "Humidity": 7.7,
+    "Temperature": 41.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.333333333333332,
+    "Humidity": 7.9,
+    "Temperature": 41.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.5,
+    "Humidity": 7.9,
+    "Temperature": 41.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.666666666666668,
+    "Humidity": 7.8,
+    "Temperature": 41.5,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 20.833333333333332,
+    "Humidity": 7.8,
+    "Temperature": 41.5,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.0,
+    "Humidity": 7.7,
+    "Temperature": 41.5,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.166666666666668,
+    "Humidity": 7.7,
+    "Temperature": 41.5,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.333333333333332,
+    "Humidity": 7.6,
+    "Temperature": 41.5,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.5,
+    "Humidity": 7.5,
+    "Temperature": 41.4,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.666666666666668,
+    "Humidity": 7.7,
+    "Temperature": 41.4,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 21.833333333333332,
+    "Humidity": 7.6,
+    "Temperature": 41.4,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.0,
+    "Humidity": 7.3,
+    "Temperature": 41.4,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.166666666666668,
+    "Humidity": 7.3,
+    "Temperature": 41.3,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.333333333333332,
+    "Humidity": 7.4,
+    "Temperature": 41.3,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.5,
+    "Humidity": 7.2,
+    "Temperature": 41.3,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.666666666666668,
+    "Humidity": 7.4,
+    "Temperature": 41.2,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 22.833333333333332,
+    "Humidity": 7.1,
+    "Temperature": 41.2,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.0,
+    "Humidity": 7.3,
+    "Temperature": 41.2,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.166666666666668,
+    "Humidity": 7.3,
+    "Temperature": 41.2,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.333333333333332,
+    "Humidity": 7.1,
+    "Temperature": 41.1,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.5,
+    "Humidity": 7.2,
+    "Temperature": 41.1,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.666666666666668,
+    "Humidity": 7.1,
+    "Temperature": 41.1,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 23.833333333333332,
+    "Humidity": 7.1,
+    "Temperature": 41.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.0,
+    "Humidity": 7.1,
+    "Temperature": 41.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.166666666666668,
+    "Humidity": 7.2,
+    "Temperature": 41.0,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.333333333333332,
+    "Humidity": 7.1,
+    "Temperature": 40.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.5,
+    "Humidity": 7.0,
+    "Temperature": 40.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.666666666666668,
+    "Humidity": 7.0,
+    "Temperature": 40.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 24.833333333333332,
+    "Humidity": 6.7,
+    "Temperature": 40.9,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.0,
+    "Humidity": 6.7,
+    "Temperature": 40.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.166666666666668,
+    "Humidity": 6.7,
+    "Temperature": 40.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.333333333333332,
+    "Humidity": 6.9,
+    "Temperature": 40.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.5,
+    "Humidity": 6.8,
+    "Temperature": 40.8,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.666666666666668,
+    "Humidity": 6.5,
+    "Temperature": 40.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 25.833333333333332,
+    "Humidity": 6.7,
+    "Temperature": 40.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 26.0,
+    "Humidity": 6.6,
+    "Temperature": 40.7,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 26.166666666666668,
+    "Humidity": 6.6,
+    "Temperature": 40.6,
+    "Target": 40.0,
+    "Heater": "OFF"
+  },
+  {
+    "TimeElapsed": 26.333333333333332,
+    "Humidity": 6.6,
+    "Temperature": 40.6,
+    "Target": 40.0,
+    "Heater": "OFF"
   }
 ];

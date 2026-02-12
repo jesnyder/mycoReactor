@@ -1,0 +1,6 @@
+TimeElapsed,Humidity,Temperature,Target,Heater
+00:00:00,8.0,40.7,50.0,ON
+00:00:10,NAN,NAN,NAN,NAN
+00:00:20,NAN,NAN,NAN,NAN
+00:00:30,8.1,-45.0,40.0,ON
+00:00:40,8.2,40.7,40.0,OFF
