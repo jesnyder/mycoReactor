@@ -3,330 +3,880 @@
 <head>
 <meta charset="UTF-8">
 <title>MycoReator</title>
+<link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="js/202602111405.js"></script>
-<script src="js/202602111407.js"></script>
-<script src="js/202602111408.js"></script>
-<script src="js/202602111411.js"></script>
-<script src="js/202602111532.js"></script>
-<script src="js/202602111606.js"></script>
-<script src="js/202602111633.js"></script>
-<script src="js/202602111635.js"></script>
-<script src="js/202602111639.js"></script>
-<style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-</style>
+<script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
 </head>
 <body>
 <h1>MycoReator</h1>
 
 <h2>Objective</h2>
-<p>Control a heating pad using SHT30 temperature sensor and visualize the logged temperature and humidity data.</p>
+<p>Control and monitor a heating pad system using Arduino and SHT30 sensor. Logs are visualized interactively.
+<a href="https://github.com/jesnyder/mycoReactor" target="_blank">GitHub Repo</a></p>
 
-<h2>Major Tasks</h2>
+<h2>Capabilities</h2>
+<p>Logs temperature and humidity every 10 seconds. Controls heater via MOSFET. Generates interactive Plotly plots
+and Tabulator tables with download buttons. Highlights heater ON periods and shows target temperature.</p>
+
+<h2>Tasks</h2>
 <ul>
-<li>Read CSV logs from Arduino heater system</li>
-<li>Convert CSV data to JSON for JavaScript</li>
-<li>Plot Time vs Temperature (left Y-axis) and Humidity (right Y-axis) using Plotly.js</li>
-<li>Ignore invalid or negative temperature readings</li>
-<li>Provide interactive visualizations of heater behavior</li>
+<li>Read SHT30 temperature/humidity from Arduino</li>
+<li>Control heating pad via IRL44N MOSFET</li>
+<li>Log CSV data every 10 seconds in '../../results/heater'</li>
+<li>Generate interactive plots and tables using Plotly.js and Tabulator</li>
+<li>Wiring diagram: <pre>
+SHT30 (I2C): Red->5V, Black->GND, Yellow->SCL (Mega21), White->SDA(Mega20)
+MOSFET IRL44N: Gate->Pin9, Drain->Pad-, Source->GND, Pad+->12V+, Diode 1N4007 Cathode+12V, Anode Drain-
+</pre></li>
 </ul>
 
-<h2>Tools Used</h2>
-<ul>
-<li>Python: CSV processing and JS generation</li>
-<li>HTML/CSS/JavaScript: website structure and styling</li>
-<li>Plotly.js: interactive plotting library</li>
-<li>Arduino with SHT30 sensor & MOSFET heater control</li>
-<li>CSV logs from Arduino</li>
-</ul>
+<h2>Results</h2>
+<h3 id='section_202602111639'>Feb 11, 2026 16:39</h3>
+<p>Evan stacked two placed two petri dished containing nearly pure mycellium on the heating pad, which had been warmed to 60 degC. The petri dishes were nearly pure mycellium than had to be dried for further analysis.
 
-<h2>Hardware Setup</h2>
-<pre>
-SHT30 Sensor (I2C)
-- Red    -> 5V
-- Black  -> GND
-- Yellow -> SCL (Mega pin 21)
-- White  -> SDA (Mega pin 20)
+A timelapse was taken of one dish (the top dish) using a digital microscope (DinoLite) and companion software. Photos were taken every 5 minutes for 60 minutes (from 5:20 to 6:20).
 
-Heating Pad via MOSFET (IRL44N)
-- Gate   -> Arduino pin 9
-- Drain  -> Heating pad negative (-)
-- Source -> GND
-- Heating pad positive (+) -> 12V DC adapter positive
-- 1N4007 diode across heating pad (Cathode to +12V, Anode to Drain)
 
-Power Supply
-- Alito AC/DC Adapter ALT-1201: 12V DC, 1A for heating pad
-- Arduino powered via USB or separate 5V supply
-</pre>
+In future studies, the petri dishes should have been weighed before and after drying.
 
-<h2>Plots</h2>
-<div id="plot_0" style="width:100%;height:400px;"></div>
-<div id="plot_1" style="width:100%;height:400px;"></div>
-<div id="plot_2" style="width:100%;height:400px;"></div>
-<div id="plot_3" style="width:100%;height:400px;"></div>
-<div id="plot_4" style="width:100%;height:400px;"></div>
-<div id="plot_5" style="width:100%;height:400px;"></div>
-<div id="plot_6" style="width:100%;height:400px;"></div>
-<div id="plot_7" style="width:100%;height:400px;"></div>
-<div id="plot_8" style="width:100%;height:400px;"></div>
+This is a link to slides on the constrcution and use of the heater
+https://docs.google.com/presentation/d/1ZvSA9oj7bTSweTrYoQJAS_rbTViF5D0WxH5KqCNhA_8/edit?usp=sharing
+
+The plot shows when the heater was on with a red background.</p>
+<p>Duration: 105.38 min, Heater ON: 63.69 min, Heater OFF: 41.69 min</p>
+<p>Temperature (째C): Max nan, Min nan, Avg nan, Range nan</p>
+<p>Humidity (%): Max nan, Min nan, Avg nan, Range nan</p>
+<div id='plot_section_202602111639'></div>
+<button id='btn_section_202602111639'>Download CSV</button>
+<div id='table_section_202602111639'></div>
+<script src='js/202602111639.js'></script>
 
 <script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111639');
+    const tableDiv = document.getElementById('table_section_202602111639');
+    const btn = document.getElementById('btn_section_202602111639');
+    const dlist = data_202602111639;
 
-var trace_temp_0 = {
-  x: data_202602111405.map(d => d.TimeElapsed),
-  y: data_202602111405.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111405 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_0 = {
-  x: data_202602111405.map(d => d.TimeElapsed),
-  y: data_202602111405.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111405 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_0', [trace_temp_0, trace_hum_0], {
-  title: 'data_202602111405 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
 
-var trace_temp_1 = {
-  x: data_202602111407.map(d => d.TimeElapsed),
-  y: data_202602111407.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111407 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_1 = {
-  x: data_202602111407.map(d => d.TimeElapsed),
-  y: data_202602111407.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111407 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_1', [trace_temp_1, trace_hum_1], {
-  title: 'data_202602111407 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
 
-var trace_temp_2 = {
-  x: data_202602111408.map(d => d.TimeElapsed),
-  y: data_202602111408.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111408 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_2 = {
-  x: data_202602111408.map(d => d.TimeElapsed),
-  y: data_202602111408.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111408 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_2', [trace_temp_2, trace_hum_2], {
-  title: 'data_202602111408 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
 
-var trace_temp_3 = {
-  x: data_202602111411.map(d => d.TimeElapsed),
-  y: data_202602111411.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111411 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_3 = {
-  x: data_202602111411.map(d => d.TimeElapsed),
-  y: data_202602111411.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111411 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_3', [trace_temp_3, trace_hum_3], {
-  title: 'data_202602111411 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
 
-var trace_temp_4 = {
-  x: data_202602111532.map(d => d.TimeElapsed),
-  y: data_202602111532.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111532 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_4 = {
-  x: data_202602111532.map(d => d.TimeElapsed),
-  y: data_202602111532.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111532 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_4', [trace_temp_4, trace_hum_4], {
-  title: 'data_202602111532 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
 
-var trace_temp_5 = {
-  x: data_202602111606.map(d => d.TimeElapsed),
-  y: data_202602111606.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111606 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_5 = {
-  x: data_202602111606.map(d => d.TimeElapsed),
-  y: data_202602111606.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111606 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_5', [trace_temp_5, trace_hum_5], {
-  title: 'data_202602111606 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111639.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
-var trace_temp_6 = {
-  x: data_202602111633.map(d => d.TimeElapsed),
-  y: data_202602111633.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111633 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_6 = {
-  x: data_202602111633.map(d => d.TimeElapsed),
-  y: data_202602111633.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111633 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_6', [trace_temp_6, trace_hum_6], {
-  title: 'data_202602111633 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
-
-var trace_temp_7 = {
-  x: data_202602111635.map(d => d.TimeElapsed),
-  y: data_202602111635.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111635 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_7 = {
-  x: data_202602111635.map(d => d.TimeElapsed),
-  y: data_202602111635.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111635 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_7', [trace_temp_7, trace_hum_7], {
-  title: 'data_202602111635 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
-
-var trace_temp_8 = {
-  x: data_202602111639.map(d => d.TimeElapsed),
-  y: data_202602111639.map(d => d.Temperature),
-  mode: 'lines+markers',
-  name: 'data_202602111639 Temperature',
-  yaxis: 'y1',
-  marker: {color: 'red'}
-};
-var trace_hum_8 = {
-  x: data_202602111639.map(d => d.TimeElapsed),
-  y: data_202602111639.map(d => d.Humidity),
-  mode: 'lines+markers',
-  name: 'data_202602111639 Humidity',
-  yaxis: 'y2',
-  marker: {color: 'blue'}
-};
-Plotly.newPlot('plot_8', [trace_temp_8, trace_hum_8], {
-  title: 'data_202602111639 - Temperature & Humidity vs Time',
-  xaxis: {title: 'Time (minutes)'},
-  yaxis: {title: 'Temperature (캜)', side: 'left', color: 'red'},
-  yaxis2: {
-      title: 'Humidity (%)',
-      overlaying: 'y',
-      side: 'right',
-      color: 'blue'
-  }
-});
-
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
 </script>
+<h3 id='section_202602111635'>Feb 11, 2026 16:35</h3>
+<p>Duration: 2.67 min, Heater ON: 2.17 min, Heater OFF: 0.50 min</p>
+<p>Temperature (째C): Max nan, Min nan, Avg nan, Range nan</p>
+<p>Humidity (%): Max nan, Min nan, Avg nan, Range nan</p>
+<div id='plot_section_202602111635'></div>
+<button id='btn_section_202602111635'>Download CSV</button>
+<div id='table_section_202602111635'></div>
+<script src='js/202602111635.js'></script>
 
-</body>
-</html>
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111635');
+    const tableDiv = document.getElementById('table_section_202602111635');
+    const btn = document.getElementById('btn_section_202602111635');
+    const dlist = data_202602111635;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111635.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111633'>Feb 11, 2026 16:33</h3>
+<p>Duration: 1.83 min, Heater ON: 0.17 min, Heater OFF: 1.66 min</p>
+<p>Temperature (째C): Max 41.00, Min 40.70, Avg nan, Range 0.30</p>
+<p>Humidity (%): Max 8.60, Min 8.00, Avg nan, Range 0.60</p>
+<div id='plot_section_202602111633'></div>
+<button id='btn_section_202602111633'>Download CSV</button>
+<div id='table_section_202602111633'></div>
+<script src='js/202602111633.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111633');
+    const tableDiv = document.getElementById('table_section_202602111633');
+    const btn = document.getElementById('btn_section_202602111633');
+    const dlist = data_202602111633;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111633.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111606'>Feb 11, 2026 16:06</h3>
+<p>Duration: 26.33 min, Heater ON: 5.50 min, Heater OFF: 20.83 min</p>
+<p>Temperature (째C): Max nan, Min nan, Avg nan, Range nan</p>
+<p>Humidity (%): Max nan, Min nan, Avg nan, Range nan</p>
+<div id='plot_section_202602111606'></div>
+<button id='btn_section_202602111606'>Download CSV</button>
+<div id='table_section_202602111606'></div>
+<script src='js/202602111606.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111606');
+    const tableDiv = document.getElementById('table_section_202602111606');
+    const btn = document.getElementById('btn_section_202602111606');
+    const dlist = data_202602111606;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111606.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111532'>Feb 11, 2026 15:32</h3>
+<p>Duration: 4.83 min, Heater ON: 4.83 min, Heater OFF: 0.00 min</p>
+<p>Temperature (째C): Max 46.50, Min 44.80, Avg 45.68, Range 1.70</p>
+<p>Humidity (%): Max 0.50, Min 0.00, Avg 0.16, Range 0.50</p>
+<div id='plot_section_202602111532'></div>
+<button id='btn_section_202602111532'>Download CSV</button>
+<div id='table_section_202602111532'></div>
+<script src='js/202602111532.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111532');
+    const tableDiv = document.getElementById('table_section_202602111532');
+    const btn = document.getElementById('btn_section_202602111532');
+    const dlist = data_202602111532;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111532.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111411'>Feb 11, 2026 14:11</h3>
+<p>Duration: 44.80 min, Heater ON: 44.46 min, Heater OFF: 0.34 min</p>
+<p>Temperature (째C): Max nan, Min nan, Avg nan, Range nan</p>
+<p>Humidity (%): Max nan, Min nan, Avg nan, Range nan</p>
+<div id='plot_section_202602111411'></div>
+<button id='btn_section_202602111411'>Download CSV</button>
+<div id='table_section_202602111411'></div>
+<script src='js/202602111411.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111411');
+    const tableDiv = document.getElementById('table_section_202602111411');
+    const btn = document.getElementById('btn_section_202602111411');
+    const dlist = data_202602111411;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111411.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111408'>Feb 11, 2026 14:08</h3>
+<p>Duration: 0.83 min, Heater ON: 0.00 min, Heater OFF: 0.83 min</p>
+<p>Temperature (째C): Max 46.70, Min 46.50, Avg 46.58, Range 0.20</p>
+<p>Humidity (%): Max 4.60, Min 4.10, Avg 4.32, Range 0.50</p>
+<div id='plot_section_202602111408'></div>
+<button id='btn_section_202602111408'>Download CSV</button>
+<div id='table_section_202602111408'></div>
+<script src='js/202602111408.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111408');
+    const tableDiv = document.getElementById('table_section_202602111408');
+    const btn = document.getElementById('btn_section_202602111408');
+    const dlist = data_202602111408;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111408.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111407'>Feb 11, 2026 14:07</h3>
+<p>Duration: 0.50 min, Heater ON: 0.00 min, Heater OFF: 0.50 min</p>
+<p>Temperature (째C): Max 47.10, Min 47.00, Avg 47.02, Range 0.10</p>
+<p>Humidity (%): Max 4.40, Min 4.10, Avg 4.22, Range 0.30</p>
+<div id='plot_section_202602111407'></div>
+<button id='btn_section_202602111407'>Download CSV</button>
+<div id='table_section_202602111407'></div>
+<script src='js/202602111407.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111407');
+    const tableDiv = document.getElementById('table_section_202602111407');
+    const btn = document.getElementById('btn_section_202602111407');
+    const dlist = data_202602111407;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111407.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+<h3 id='section_202602111405'>Feb 11, 2026 14:05</h3>
+<p>Duration: 1.33 min, Heater ON: 0.00 min, Heater OFF: 1.33 min</p>
+<p>Temperature (째C): Max 49.70, Min 49.70, Avg 49.70, Range 0.00</p>
+<p>Humidity (%): Max 3.50, Min 3.10, Avg 3.39, Range 0.40</p>
+<div id='plot_section_202602111405'></div>
+<button id='btn_section_202602111405'>Download CSV</button>
+<div id='table_section_202602111405'></div>
+<script src='js/202602111405.js'></script>
+
+<script>
+(function(){
+    const plotDiv = document.getElementById('plot_section_202602111405');
+    const tableDiv = document.getElementById('table_section_202602111405');
+    const btn = document.getElementById('btn_section_202602111405');
+    const dlist = data_202602111405;
+
+    // Create dual-axis plot with heater shading
+    const tempTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Temperature),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Temperature',
+        yaxis:'y1'
+    };
+    const humTrace = {
+        x:dlist.map(d=>d.Time),
+        y:dlist.map(d=>d.Humidity),
+        type:'scatter',
+        mode:'lines+markers',
+        name:'Humidity',
+        yaxis:'y2'
+    };
+
+    // Heater shading
+    let shapes = [];
+    let start=null;
+    dlist.forEach((d,i)=>{
+        if(d.Heater=='ON' && start===null) start=d.Time;
+        if((d.Heater!='ON' || i===dlist.length-1) && start!==null){
+            let end = d.Time;
+            shapes.push({type:'rect', xref:'x', yref:'paper', x0:start, x1:end, y0:0, y1:1, fillcolor:'rgba(255,0,0,0.1)', line:{width:0}});
+            start=null;
+        }
+    });
+
+    // Target temperature line
+    if(dlist.length>0){
+        shapes.push({
+            type:'line', x0:dlist[0].Time, x1:dlist[dlist.length-1].Time,
+            y0:dlist[0].Target, y1:dlist[0].Target,
+            line:{color:'black', dash:'dash'}
+        });
+    }
+
+    const layout = {
+        xaxis:{title:'Time lapsed (minutes)'},
+        yaxis:{title:'Temperature (째C)'},
+        yaxis2:{title:'Humidity (%)', overlaying:'y', side:'right'},
+        shapes:shapes
+    };
+
+    Plotly.newPlot(plotDiv,[tempTrace,humTrace],layout,{responsive:true});
+
+    // CSV download
+    btn.onclick=()=>{
+        let csvContent = "data:text/csv;charset=utf-8,Time,Temperature,Humidity,Target,Heater\n";
+        dlist.forEach(d=>{ csvContent += `${d.Time},${d.Temperature},${d.Humidity},${d.Target},${d.Heater}\n`; });
+        const encodedUri = encodeURI(csvContent);
+        const link=document.createElement('a');
+        link.setAttribute('href',encodedUri);
+        link.setAttribute('download','202602111405.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Tabulator table
+    new Tabulator(tableDiv,{
+        data:dlist,
+        layout:"fitDataFill",
+        pagination:"local",
+        paginationSize:10,
+        columns:[
+            {title:"Time (min)",field:"Time"},
+            {title:"Temperature (째C)",field:"Temperature"},
+            {title:"Humidity (%)",field:"Humidity"},
+            {title:"Target (째C)",field:"Target"},
+            {title:"Heater",field:"Heater"}
+        ]
+    });
+})();
+</script>
+</body></html>
