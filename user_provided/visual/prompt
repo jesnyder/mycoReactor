@@ -1,8 +1,44 @@
+Read the whole file. thnk hard. accuracy is more important than speed.
+Use comments to explain the code.
+print statement to the terminal while code is running to update status.
+
+Refer to this to make sure the pages renders locally and on GitHub pages:
+Display all plots, tables, and download buttons locally and on GitHub Pages.
+Include the download button above the table for each dataset.
+Use GitHub Pages–friendly relative paths (js/filename.js relative to index.html) that work regardless of repo name.
+Ensure case-sensitive folder and file names are handled correctly.
+Wrap plotting and table code so it runs after the JS data file is fully loaded (DOMContentLoaded or equivalent).
+Assign unique variable names for each dataset to prevent overwriting.
+Keep all previous functionality:
+CSV parsing with utf-8 + errors='ignore'
+Ignore NAN and negative numbers
+Compute statistics and durations
+Plot temperature (left y-axis), humidity (right y-axis)
+Shade heater-on periods, show target temperature line
+Pagination for tables (max 10 entries)
+Generate index.html in ../../docs and JS files in ../../docs/js as before.
+
+Please update my build_website.py so that the HTML and JS it generates will work
+correctly on GitHub Pages. Make sure:
+All paths to JS files are GitHub Pages–friendly (relative to the index.html file)
+and work regardless of the repo name.
+Folder and file names are handled in a case-sensitive way.
+All generated JS data files are referenced properly in index.html so the plots and tables load.
+The script still generates all interactive plots, tables, download buttons,
+and statistics as before.
+
 Write python code to build a website.
+put all the code in a function called "build_website"
+I want the function to execute automatically when the Python file is run."
+
+in the header of the python file, put the date the file was created as a comment
 
 Look in this directory. "../../results/heater"
 each filename is saved with a timestamp - year month day hour minute
 For each file found, create a .js file in "../../docs/js" with the same filename
+
+When reading CSV files, assume the files may contain non-UTF-8 characters like degree symbols. Open them in Python with encoding='utf-8' and errors='ignore' to avoid decode errors.
+Write Python code that reads CSV files which may contain symbols like °C or other non-ASCII characters. Handle them gracefully by using UTF-8 encoding with error handling, and ignore invalid characters.
 
 in each folder create a const variable with a unique name
 set that variable equal to json that contains the contents of the file of the same name
@@ -24,14 +60,36 @@ TimeElapsed,Humidity,Temperature,Target,Heater
 00:01:30,4.6,47.2,50.0,ON
 
 Ignore the NAN. disreguard negative numbers. just do not include.
+The Humidity, Temperature, Target are all numbers, convert those columns to numbers for analysis.
 
 TimeElapsed is the timestamp. hours : minutes : seconds
-convert to minutes and use as a number to create a scatter plot with the temperature and humidity. plot temperature against the left y axis and humidity against the right y axis.
-label the axes with units
+convert to minutes and use as a number to create a scatter plot with the temperature and humidity.
+Add a background shade for when the heater is on or off.
+Add a horizontal line to show the taerget temperature
+
+plot temperature against the left y axis and humidity against the right y axis.
+add light red background to show when the heater was on
+add a horizontal line - dashed black to show the target temperature
+
+label the axes with units, for example x-axis "Time lapsed (minutes)", y-axis left "Temperature (degC)", y-axis right "Humidity (%)"
+when labeling the data sets, drop the filename specifics and just include "Temperature" or "Humditiy" as label name
+
+For each plot, add an interactive table to display the data below each plot. Use https://tabulator.info/ to build the plot.
+Pagenate the table to max of 10 entries with pagination to keep the table short and the page readable
+For the minutes column, display with two decimal places, not more.
+
+Add a button to "download csv" to download the data in the plot as a csv.
+Place the button just above the table.
+Give each dataset a unique name so all buttons can displayed with their plots on the webpage.
+Put the timestamp in the filename.
+
+Add a background shade for when the heater is on or off.
+Add a horizontal line to show the taerget temperature
 
 Use Javascript Plotly
 https://plotly.com/javascript/
-to create plots of the time vs temperature for each .csv saved in
+to create plot (specifically a scatter plot) of the time vs temperature for each .csv saved in
+plots can be downloaded with plotly built-ins, give the downloaded filename from plotly the same name as the source file
 
 Refer to the variable for the data
 
@@ -40,7 +98,58 @@ In the header of the .js file, include the date and clear direction of what to c
 
 also create an index.html with the title "MycoReator" in "../../docs"
 
-Write an objective, tasks, and list tool by reviewing the code and comments pasted below.
+Objective subheading with text for in 1-3 sentences
+Include a link to the github repo https://github.com/jesnyder/mycoReactor
+
+Capabilities subheading - 3-4 sentences on what this can do
+
+Tasks subheading with text and a list of tasks with software of hardware or tool with details (including links to parts or libraries if found)
+Include a wiring diagram
+
+Results subheading with each .csv visualized.
+Assign unique variable names so plots, tables, data, and downloadable elements can all be displayed.
+
+
+List in reverse chronological order the
+
+title of the section, which is the filename converted to a readable date.
+For example 202602111405 filename becomes Feb 11, 2026 14:05
+
+Check if there are notes on this dataset.
+Look in "../../user_provided/experiment_notes"
+see if there is a ".txt" file with the same filename as the dataset
+If found, read in the text. Check for grammatical or spelling errors.
+Then place as text in this section.
+Look for hyperlinks in the text and then convert to a hyperlink inline to open in a new tab when clicked.
+
+When calculating the statistics for the next part, treat the temperatures and humidity read in from the dataset as numbers, not strings
+Ignore any "NAN" or negative numbers for analysis of minimum, maximum, average, or range.
+Present the numbers with two places after the decimal point.
+
+List the
+Duration: calculate the duration in minutes
+Duration, Heater ON: calculate the total length of time the heater was on in minutes
+Duration, Heater OFF: calculate the total length of time the heater was off in minutes
+
+Temperature, Maximum: calculate number in minutes excluding negative numbers or NAN
+Temperature, Minimum: calculate number excluding negative numbers or NAN from retrieved data for this file
+Temperature, Average: calculate number excluding negative numbers or NAN from retrieved data for this file
+Temperature, Range: calculate number excluding negative numbers or NAN from retrieved data for this file
+
+Humidity, Maximum: calculate number in minutes excluding negative numbers or NAN
+Humidity, Minimum: calculate number excluding negative numbers or NAN from retrieved data for this file
+Humidity, Average: calculate number excluding negative numbers or NAN from retrieved data for this file
+Humidity, Range: calculate number excluding negative numbers or NAN from retrieved data for this file
+
+
+
+Then display the plot / download button / table for each of the source files
+
+List the figures produced for each .csv file found in the folder in reverse chronological order.
+Place the plot, then the button to download the csv and then the table.
+
+Then repeat for the next dataset.
+
 
 This is the background for the index file text. Include specifics, including wiring and how to identify the pins on the IRL44N
 
@@ -244,3 +353,73 @@ except KeyboardInterrupt:
 
 finally:
     ser.close()
+
+
+Objective
+
+Control and monitor a heating pad system for precise temperature regulation using an Arduino, SHT30 temperature/humidity sensor, and MOSFET. Data is logged and visualized to optimize heater performance.
+Major Tasks
+
+    Read temperature and humidity from the SHT30 sensor.
+    Control a heating pad via IRL44N MOSFET based on target temperature.
+    Log system status to timestamped CSV files every 10 seconds.
+    Generate interactive web-based plots of temperature and humidity over time.
+
+Tools Used
+
+    Arduino (Mega/Uno)
+    SHT30 I2C temperature & humidity sensor
+    IRL44N N-channel MOSFET
+    Python (logging and website generation)
+    Plotly.js for interactive plotting
+    HTML/CSS/JavaScript for the dashboard
+
+More Information
+
+For detailed instructions, plots, and additional documentation, visit the project website:
+https://jesnyder.github.io/mycoReactor/
+Lessons Learned from the MycoReactor Heater Project
+
+    Double-check pin assignments on the Arduino
+        Always confirm which Arduino pin is connected to the MOSFET gate.
+        Using the wrong pin can prevent control signals from reaching the MOSFET or, worse, fry components.
+
+    Understand the MOSFET pinout
+        The IRL44N (and similar MOSFETs) has Gate (G), Drain (D), Source (S).
+        On most IRL44N packages (TO-220 or similar), looking at the front (text side), left to right is Gate → Drain → Source.
+        Misidentifying pins can make the heater permanently on or prevent it from turning on.
+
+    The IRL44N (Allecin) diagram: https://www.icdrex.com/introducing-the-irlz44n-complete-guide-features-and-applications/
+
+    Always connect a common ground
+        The Arduino ground and the heater/MOSFET ground must be connected.
+        Without a shared reference, the MOSFET cannot properly switch, leading to erratic behavior.
+
+    Diode placement matters
+        A flyback diode (e.g., 1N4007) is needed across the load, not the MOSFET.
+        The cathode (silver band) goes to the positive voltage, and the anode goes to the MOSFET drain/negative side of the heating pad.
+        This protects the MOSFET from voltage spikes caused by inductive loads or sudden heater disconnection.
+
+    Check voltage ratings of components
+        Make sure the MOSFET and diode are rated for the heater voltage and current.
+        Using components rated too low can cause permanent damage.
+
+    Test with low power first
+        Before applying full 12V, test control logic with small loads or an LED.
+        This prevents frying MOSFETs or other components if wiring is incorrect.
+
+    Thermal lag is normal
+        The temperature sensor reacts to the environment, not instantly to heater changes.
+        Expect some overshoot and lag — it’s normal for bang-bang controllers.
+
+    Serial commands are useful for dynamic adjustment
+        Being able to set target temperature via the Serial Monitor allows safe testing without reprogramming.
+        Example: "H 50" sets the target to 50°C.
+
+    Document wiring clearly
+        Diagrams and text notes prevent mistakes.
+        Label wires: SHT30 (VCC, GND, SCL, SDA), MOSFET (G, D, S), heater (+, -), diode.
+
+    Keep spares of sensitive components
+        MOSFETs and diodes can fry if wired incorrectly.
+        Having replacements prevents long downtime.

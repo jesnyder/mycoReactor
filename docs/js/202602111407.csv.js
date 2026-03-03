@@ -1,0 +1,2 @@
+// Data for 202602111407.csv - generated 2026-02-12
+const _202602111407 = [{"Minutes": 0.0, "Humidity": 4.2, "Temperature": null, "Target": 40.0, "Heater": "ON"}, {"Minutes": 0.17, "Humidity": 4.4, "Temperature": 47.1, "Target": 40.0, "Heater": "OFF"}, {"Minutes": 0.33, "Humidity": 4.3, "Temperature": 47.0, "Target": 40.0, "Heater": "OFF"}, {"Minutes": 0.5, "Humidity": 4.1, "Temperature": 47.0, "Target": 40.0, "Heater": "OFF"}, {"Minutes": 0.67, "Humidity": 4.1, "Temperature": 47.0, "Target": 40.0, "Heater": "OFF"}];
