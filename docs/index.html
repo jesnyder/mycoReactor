@@ -313,6 +313,69 @@ Pin Layout (left to right): Gate - Drain - Source
         <h2>Results</h2>
         <p>Interactive visualizations of heater system performance over time. Each dataset shows temperature and humidity trends with heater activity indicated by shaded regions.</p>
 
+        <div class="dataset" id="dataset_202603031806">
+            <h3 class="dataset-title">Mar 03, 2026 18:06</h3>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Duration</div>
+                    <div class="stat-value">68.85 min</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Heater ON</div>
+                    <div class="stat-value">48.85 min</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Heater OFF</div>
+                    <div class="stat-value">18.17 min</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Temp Max</div>
+                    <div class="stat-value">60.20 °C</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Temp Min</div>
+                    <div class="stat-value">59.50 °C</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Temp Avg</div>
+                    <div class="stat-value">59.84 °C</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Temp Range</div>
+                    <div class="stat-value">0.70 °C</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Humidity Max</div>
+                    <div class="stat-value">2.10 %</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Humidity Min</div>
+                    <div class="stat-value">0.10 %</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Humidity Avg</div>
+                    <div class="stat-value">1.46 %</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Humidity Range</div>
+                    <div class="stat-value">2.00 %</div>
+                </div>
+            </div>
+
+            <div class="plot-container">
+                <div id="plot_202603031806"></div>
+            </div>
+
+            <button class="download-btn" onclick="downloadCSV_202603031806()">
+                📥 Download CSV Data
+            </button>
+
+            <div class="table-container">
+                <div id="table_202603031806"></div>
+            </div>
+        </div>
+
         <div class="dataset" id="dataset_202603031656">
             <h3 class="dataset-title">Mar 03, 2026 16:56</h3>
 
@@ -1085,6 +1148,7 @@ The plot shows when the heater was on with a red background.
         </div>
 
     <!-- Data Files -->
+    <script src="js/202603031806.js"></script>
     <script src="js/202603031656.js"></script>
     <script src="js/202603031557.js"></script>
     <script src="js/202603031510.js"></script>
@@ -1102,6 +1166,177 @@ The plot shows when the heater was on with a red background.
     <script>
     (function() {
         'use strict';
+
+            // ========== Dataset: 202603031806 ==========
+            console.log('Processing dataset: 202603031806');
+
+            // Prepare data for plotting
+            var times_202603031806 = data_202603031806.time_minutes;
+            var temps_202603031806 = data_202603031806.temperature;
+            var humidity_202603031806 = data_202603031806.humidity;
+            var targets_202603031806 = data_202603031806.target;
+            var heater_202603031806 = data_202603031806.heater;
+
+            // Create temperature trace (left y-axis)
+            var tempTrace_202603031806 = {
+                x: times_202603031806,
+                y: temps_202603031806,
+                mode: 'lines+markers',
+                name: 'Temperature',
+                line: {color: 'rgb(219, 64, 82)', width: 2},
+                marker: {size: 4},
+                yaxis: 'y1'
+            };
+
+            // Create humidity trace (right y-axis)
+            var humidityTrace_202603031806 = {
+                x: times_202603031806,
+                y: humidity_202603031806,
+                mode: 'lines+markers',
+                name: 'Humidity',
+                line: {color: 'rgb(30, 136, 229)', width: 2},
+                marker: {size: 4},
+                yaxis: 'y2'
+            };
+
+            // Create target temperature line (dashed)
+            var targetTrace_202603031806 = {
+                x: times_202603031806,
+                y: targets_202603031806,
+                mode: 'lines',
+                name: 'Target Temp',
+                line: {color: 'black', width: 2, dash: 'dash'},
+                yaxis: 'y1'
+            };
+
+            // Create heater ON shading
+            var shapes_202603031806 = [];
+            var shadeStart_202603031806 = null;
+
+            for (var i = 0; i < heater_202603031806.length; i++) {
+                if (heater_202603031806[i] === 'ON' && shadeStart_202603031806 === null) {
+                    shadeStart_202603031806 = times_202603031806[i];
+                } else if (heater_202603031806[i] === 'OFF' && shadeStart_202603031806 !== null) {
+                    shapes_202603031806.push({
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'paper',
+                        x0: shadeStart_202603031806,
+                        x1: times_202603031806[i],
+                        y0: 0,
+                        y1: 1,
+                        fillcolor: 'rgba(255, 200, 200, 0.3)',
+                        line: {width: 0},
+                        layer: 'below'
+                    });
+                    shadeStart_202603031806 = null;
+                }
+            }
+
+            // If heater was still ON at the end
+            if (shadeStart_202603031806 !== null) {
+                shapes_202603031806.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: shadeStart_202603031806,
+                    x1: times_202603031806[times_202603031806.length - 1],
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: 'rgba(255, 200, 200, 0.3)',
+                    line: {width: 0},
+                    layer: 'below'
+                });
+            }
+
+            // Plot layout
+            var layout_202603031806 = {
+                title: 'Temperature and Humidity Over Time',
+                xaxis: {
+                    title: 'Time Elapsed (minutes)',
+                    gridcolor: '#e1e1e1'
+                },
+                yaxis: {
+                    title: 'Temperature (°C)',
+                    titlefont: {color: 'rgb(219, 64, 82)'},
+                    tickfont: {color: 'rgb(219, 64, 82)'},
+                    gridcolor: '#e1e1e1'
+                },
+                yaxis2: {
+                    title: 'Humidity (%)',
+                    titlefont: {color: 'rgb(30, 136, 229)'},
+                    tickfont: {color: 'rgb(30, 136, 229)'},
+                    overlaying: 'y',
+                    side: 'right'
+                },
+                shapes: shapes_202603031806,
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {
+                    x: 1.02,
+                    xanchor: 'left',
+                    y: 1.0,
+                    yanchor: 'top',
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    bordercolor: '#ccc',
+                    borderwidth: 1
+                },
+                plot_bgcolor: '#f9f9f9',
+                paper_bgcolor: 'white'
+            };
+
+            // Create plot
+            var plotData_202603031806 = [tempTrace_202603031806, humidityTrace_202603031806, targetTrace_202603031806];
+            Plotly.newPlot('plot_202603031806', plotData_202603031806, layout_202603031806, {
+                responsive: true,
+                toImageButtonOptions: {
+                    filename: '202603031806'
+                }
+            });
+
+            // Create table data
+            var tableData_202603031806 = [];
+            for (var i = 0; i < times_202603031806.length; i++) {
+                tableData_202603031806.push({
+                    time_minutes: times_202603031806[i],
+                    time_elapsed: data_202603031806.time_elapsed[i],
+                    temperature: temps_202603031806[i],
+                    humidity: humidity_202603031806[i],
+                    target: targets_202603031806[i],
+                    heater: heater_202603031806[i]
+                });
+            }
+
+            // Create Tabulator table
+            var table_202603031806 = new Tabulator("#table_202603031806", {
+                data: tableData_202603031806,
+                layout: "fitColumns",
+                pagination: "local",
+                paginationSize: 10,
+                paginationSizeSelector: [10, 25, 50, 100],
+                columns: [
+                    {title: "Time (min)", field: "time_minutes", formatter: function(cell) {
+                        var value = cell.getValue();
+                        return value !== null ? value.toFixed(2) : 'N/A';
+                    }},
+                    {title: "Time Elapsed", field: "time_elapsed"},
+                    {title: "Temperature (°C)", field: "temperature", formatter: function(cell) {
+                        var value = cell.getValue();
+                        return value !== null ? value.toFixed(2) : 'N/A';
+                    }},
+                    {title: "Humidity (%)", field: "humidity", formatter: function(cell) {
+                        var value = cell.getValue();
+                        return value !== null ? value.toFixed(2) : 'N/A';
+                    }},
+                    {title: "Target (°C)", field: "target", formatter: function(cell) {
+                        var value = cell.getValue();
+                        return value !== null ? value.toFixed(2) : 'N/A';
+                    }},
+                    {title: "Heater", field: "heater"}
+                ]
+            });
+
+            console.log('✓ Completed: 202603031806');
 
             // ========== Dataset: 202603031656 ==========
             console.log('Processing dataset: 202603031656');
@@ -3157,6 +3392,33 @@ The plot shows when the heater was on with a red background.
 
     })(); // End IIFE
 
+
+        // CSV download function for 202603031806
+        function downloadCSV_202603031806() {
+            var csv = 'TimeElapsed,Humidity,Temperature,Target,Heater\n';
+
+            for (var i = 0; i < data_202603031806.time_elapsed.length; i++) {
+                var row = [
+                    data_202603031806.time_elapsed[i],
+                    data_202603031806.humidity[i] !== null ? data_202603031806.humidity[i] : 'NAN',
+                    data_202603031806.temperature[i] !== null ? data_202603031806.temperature[i] : 'NAN',
+                    data_202603031806.target[i] !== null ? data_202603031806.target[i] : 'NAN',
+                    data_202603031806.heater[i] !== null ? data_202603031806.heater[i] : 'NAN'
+                ];
+                csv += row.join(',') + '\n';
+            }
+
+            // Create download link
+            var blob = new Blob([csv], { type: 'text/csv' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '202603031806.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
 
         // CSV download function for 202603031656
         function downloadCSV_202603031656() {
